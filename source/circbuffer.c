@@ -35,6 +35,7 @@ int circ_buf_dequeue(struct circ_buf* cb, int *val)
 void circ_buf_print(struct circ_buf* cb)
 {
     printf("size: %d\n", cb->sz);
+    printf("head: %d, taild: %d\n", cb->head, cb->tail);
     printf("capacity: %d\n{ ", cb->bufsz);
     for (int i = cb->tail, c = 0; c < cb->sz; i++, c++)
         printf("%d ", cb->buf[i%cb->bufsz]);
