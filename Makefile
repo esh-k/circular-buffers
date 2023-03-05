@@ -1,10 +1,37 @@
 # Add new projects here
-PROJECTS = circular-buffer-c
+PROJECTS = \
+	CCircularBuffer\
+	CppCircularBuffer\
 
-$(PROJECTS)/build: $(PROJECTS)
-	cd $^ && $(MAKE)
+BUILDS = $(patsubst %, build_%, $(PROJECTS))
+CLEANS = $(patsubst %, clean_%, $(PROJECTS))
 
-.PHONY: $(PROJECTS)/build
+# build single component
+# make build_<project_name>
+# clean single component
+# make clean_<project_name>
 
-clean: $(PROJECTS)
-	cd $^ && $(MAKE) clean
+all: $(BUILDS)
+
+.PHONY: all
+
+# $(PROJECTS): $(PROJECTS)
+# 	cd $^ && $(MAKE)
+
+define BUILD_RULE
+build_$(1): $(1)
+	cd $(1) && $(MAKE)
+endef
+$(foreach p, $(PROJECTS),$(eval $(call BUILD_RULE,$(p))))
+
+.PHONY: $(BUILDS)
+
+clean: $(CLEANS)
+
+define CLEAN_RULE
+clean_$(1): $(1)
+	cd $(1) && $(MAKE) clean
+endef
+$(foreach p, $(PROJECTS),$(eval $(call CLEAN_RULE,$(p))))
+
+.PHONE: $(CLEANS)
